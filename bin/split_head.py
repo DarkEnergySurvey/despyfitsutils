@@ -14,7 +14,9 @@ def read_list(listname):
     outfiles = []
     with open(listname, 'r') as listfh:
         outfiles = listfh.readlines()
-    return outfiles
+
+    # Strip \n from list if present
+    return [f.strip() for f in outfiles]
 
 
 def main():
