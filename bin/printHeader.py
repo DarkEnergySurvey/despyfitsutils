@@ -19,10 +19,10 @@ def print_header(fitsfile, ext=0, ofileh=sys.stdout):
     hdr = fitsio.read_header(fitsfile, ext=ext)
     ofileh.write("%s" % hdr)
     ofileh.write("\n")
-    outfh.close()
     return
 
-if __name__ == "__main__":
+def main():
+    """ main function """
     parser = argparse.ArgumentParser(description='Prints fits headers')
     parser.add_argument('-o', '--outfile', action='store', type=str, help="Print header to given file", default=False)
     parser.add_argument('-x', '--extension', action='store', default=0)
@@ -45,3 +45,7 @@ if __name__ == "__main__":
 
     # Make the call
     print_header(args.fitsfile, ext=args.extension, ofileh=outfh)
+    outfh.close()
+
+if __name__ == "__main__":
+    main()

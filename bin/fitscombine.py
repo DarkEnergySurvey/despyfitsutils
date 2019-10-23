@@ -5,8 +5,7 @@
 import argparse
 import despyfitsutils
 
-if __name__ == "__main__":
-
+def main():
     parser = argparse.ArgumentParser(description="Create a MEF fits file from a list of flat fits files")
 
     parser.add_argument("filenames", nargs='*',
@@ -20,3 +19,6 @@ if __name__ == "__main__":
     args = parser.parse_args()
     kwargs = vars(args)
     despyfitsutils.makeMEF(**kwargs)
+
+if __name__ == "__main__":
+    main()
