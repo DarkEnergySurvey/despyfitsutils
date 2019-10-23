@@ -37,9 +37,9 @@ class makeMEF(object):
 
         # Make sure that filenames and outname are defined
         if not self.filenames:
-            sys.exit("ERROR: must provide input file names")
+            raise Exception("ERROR: must provide input file names")
         if not self.outname:
-            sys.exit("ERROR: must provide output file name")
+            raise Exception("ERROR: must provide output file name")
 
         # Output file exits
         if os.path.isfile(self.outname) and self.clobber is False:
@@ -56,7 +56,7 @@ class makeMEF(object):
 
         return
 
-    def addEXTNAME(self, **kwargs):
+    def addEXTNAME(self):
         """Add a user-provided list of extension names to the MEF
         """
         if len(self.extnames) != len(self.filenames):
@@ -80,7 +80,7 @@ class makeMEF(object):
             k = k + 1
         return
 
-    def read(self, **kwargs):
+    def read(self):
         """ Read in the HDUs using pyfits
         """
         self.HDU = []
@@ -92,7 +92,7 @@ class makeMEF(object):
             k = k + 1
         return
 
-    def write(self, **kwargs):
+    def write(self):
         """ Write MEF file with no Primary HDU
         """
         newhdu = pyfits.HDUList()
