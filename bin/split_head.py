@@ -24,9 +24,9 @@ def main():
     parser = argparse.ArgumentParser(description='Split single head file into multiple files')
     parser.add_argument('--in', action='store', help='head file to split')
     group = parser.add_mutually_exclusive_group()
-    group.add_argument('--list', action='store', 
+    group.add_argument('--list', action='store',
                        help='list file containing output filenames, order must match order in head file')
-    group.add_argument('--out', action='store', 
+    group.add_argument('--out', action='store',
                        help='output filenames, order must match order in head file')
 
     args = vars(parser.parse_args())   # convert dict
