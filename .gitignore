@@ -4,3 +4,7 @@
 *.fits
 
 *.list
+
+combine_test_expcat.fits.orig
+
+combine_test_expcat.fits.orig2
