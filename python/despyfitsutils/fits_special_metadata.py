@@ -128,7 +128,7 @@ def func_nite(filename, hdulist=None, whichhdu=None):
     else:
         hdulist2 = hdulist
 
-    date_obs = fitsutils.get_hdr_value(hdulist, 'DATE-OBS', whichhdu)
+    date_obs = fitsutils.get_hdr_value(hdulist2, 'DATE-OBS', whichhdu)
 
     if hdulist is None:
         hdulist2.close()
@@ -168,7 +168,7 @@ def func_objects(filename, hdulist=None, whichhdu=None):
     else:
         hdulist2 = hdulist
 
-    objects = fitsutils.get_hdr_value(hdulist, 'NAXIS2', whichhdu)
+    objects = fitsutils.get_hdr_value(hdulist2, 'NAXIS2', whichhdu)
 
     if hdulist is None:
         hdulist2.close()
@@ -208,9 +208,9 @@ def func_field(filename, hdulist=None, whichhdu=None):
         hdulist2 = hdulist
 
     try:
-        objectval = fitsutils.get_hdr_value(hdulist, 'OBJECT', whichhdu)
+        objectval = fitsutils.get_hdr_value(hdulist2, 'OBJECT', whichhdu)
     except:
-        objectval = fitsutils.get_hdr_value(hdulist, 'OBJECT', 'LDAC_IMHEAD')
+        objectval = fitsutils.get_hdr_value(hdulist2, 'OBJECT', 'LDAC_IMHEAD')
 
     if hdulist is None:
         hdulist2.close()
@@ -247,7 +247,7 @@ def func_radeg(filename, hdulist=None, whichhdu=None):
     else:
         hdulist2 = hdulist
 
-    ra = fitsutils.get_hdr_value(hdulist, 'RA', whichhdu)
+    ra = fitsutils.get_hdr_value(hdulist2, 'RA', whichhdu)
 
     if hdulist is None:
         hdulist2.close()
@@ -284,7 +284,7 @@ def func_tradeg(filename, hdulist=None):
     else:
         hdulist2 = hdulist
 
-    telra = fitsutils.get_hdr_value(hdulist, 'TELRA')
+    telra = fitsutils.get_hdr_value(hdulist2, 'TELRA')
 
     if hdulist is None:
         hdulist2.close()
@@ -322,7 +322,7 @@ def func_decdeg(filename, hdulist=None, whichhdu=None):
     else:
         hdulist2 = hdulist
 
-    dec = fitsutils.get_hdr_value(hdulist, 'DEC', whichhdu)
+    dec = fitsutils.get_hdr_value(hdulist2, 'DEC', whichhdu)
 
     if hdulist is None:
         hdulist2.close()
@@ -360,7 +360,7 @@ def func_tdecdeg(filename, hdulist=None):
     else:
         hdulist2 = hdulist
 
-    teldec = fitsutils.get_hdr_value(hdulist, 'TELDEC')
+    teldec = fitsutils.get_hdr_value(hdulist2, 'TELDEC')
 
     if hdulist is None:
         hdulist2.close()
