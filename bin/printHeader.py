@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 # $Id: printHeader.py 23378 2014-06-24 14:39:15Z mgower $
 # $Rev:: 23378                            $:  # Revision of last commit.
@@ -17,9 +17,8 @@ def print_header(fitsfile, ext=0, ofileh=sys.stdout):
     """ print header from fits file to either stdout or to a file """
 
     hdr = fitsio.read_header(fitsfile, ext=ext)
-    ofileh.write("%s" % hdr)
+    ofileh.write(f"{hdr}")
     ofileh.write("\n")
-    return
 
 def main():
     """ main function """
@@ -33,7 +32,7 @@ def main():
         try:
             outfh = open(args.outfile, "w")
         except:
-            sys.exit("ERROR: Cannot open %s" % args.outfile)
+            sys.exit(f"ERROR: Cannot open {args.outfile}")
     else:
         outfh = sys.stdout
 

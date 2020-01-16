@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # $Id$
 # $Rev::                                  $:  # Revision of last commit.
 # $LastChangedBy::                        $:  # Author of last commit.
@@ -32,7 +32,7 @@ def main():
     if args['list'] is not None:
         incats = ','.join(read_list(args['list']))
 
-    print "Combining catalogs into %s" % (args['outcat'])
+    print(f"Combining catalogs into {args['outcat']}")
     fitsutils.combine_cats(incats, args['outcat'])
 
 

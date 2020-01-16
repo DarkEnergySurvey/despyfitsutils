@@ -6,6 +6,6 @@
 from . import fitsutils
 from .fitsutils import *
 
-__author__  = "Felipe Menanteau, Michelle Gower"
+__author__ = "Felipe Menanteau, Michelle Gower"
 __version__ = '1.0.0'
 version = __version__
