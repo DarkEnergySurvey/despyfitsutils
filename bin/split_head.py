@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # $Id$
 # $Rev::                                  $:  # Revision of last commit.
 # $LastChangedBy::                        $:  # Author of last commit.
@@ -37,7 +37,7 @@ def main():
     if args['list'] is not None:
         outheads = ','.join(read_list(args['list']))
 
-    print "Splitting %s into %s" % (inhead, outheads)
+    print(f"Splitting {inhead} into {outheads}")
     fitsutils.splitScampHead(inhead, outheads)
 
 

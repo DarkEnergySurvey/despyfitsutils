@@ -8,14 +8,13 @@
 import re
 import os
 import sys
-import pyfits
+from astropy.io import fits
 
 import despymisc.miscutils as miscutils
 
-class makeMEF(object):
+class makeMEF:
     """
-    A Class to create a MEF fits files using pyfits, we might want to
-    migrated this to use fitsio in the future.
+    A Class to create a MEF fits files.
 
     Felipe Menanteau, NCSA Aug 2014.
     """
@@ -43,11 +42,11 @@ class makeMEF(object):
 
         # Output file exits
         if os.path.isfile(self.outname) and self.clobber is False:
-            print " [WARNING]: Output file exists, try --clobber option, no file was created"
+            print(" [WARNING]: Output file exists, try --clobber option, no file was created")
             return
 
         # Get the Pyfits version as a float
-        self.pyfitsVersion = float(".".join(pyfits.__version__.split(".")[0:2]))
+        #self.pyfitsVersion = float(".".join(fits.__version__.split(".")[0:2]))
 
         self.read()
         if self.extnames:
@@ -66,16 +65,16 @@ class makeMEF(object):
         k = 0
         for extname, hdu in zip(self.extnames, self.HDU):
             if self.verb:
-                print "# Adding EXTNAME=%s to HDU %s" % (extname, k)
+                print(f"# Adding EXTNAME={extname} to HDU {k}")
             # Method for pyfits < 3.1
-            if self.pyfitsVersion < 3.1:
-                hdu[0].header.update('EXTNAME', extname, 'Extension Name', after='NAXIS2')
-                if extname in makeMEF.DES_EXT.keys():
-                    hdu[0].header.update('DES_EXT', makeMEF.DES_EXT[extname], 'DESDM Extension Name', after='EXTNAME')
-            else:
-                hdu[0].header.set('EXTNAME', extname, 'Extension Name', after='NAXIS2')
-                if extname in makeMEF.DES_EXT.keys():
-                    hdu[0].header.set('DES_EXT', makeMEF.DES_EXT[extname], 'DESDM Extension Name', after='EXTNAME')
+            #if self.pyfitsVersion < 3.1:
+            #    hdu[0].header.update('EXTNAME', extname, 'Extension Name', after='NAXIS2')
+            #    if extname in makeMEF.DES_EXT.keys():
+            #        hdu[0].header.update('DES_EXT', makeMEF.DES_EXT[extname], 'DESDM Extension Name', after='EXTNAME')
+            #else:
+            hdu[0].header.set('EXTNAME', extname, 'Extension Name', after='NAXIS2')
+            if extname in makeMEF.DES_EXT.keys():
+                hdu[0].header.set('DES_EXT', makeMEF.DES_EXT[extname], 'DESDM Extension Name', after='EXTNAME')
 
             k = k + 1
         return
@@ -87,22 +86,20 @@ class makeMEF(object):
         k = 0
         for fname in self.filenames:
             if self.verb:
-                print "# Reading %s --> HDU %s" % (fname, k)
-            self.HDU.append(pyfits.open(fname))
+                print(f"# Reading {fname} --> HDU {k}")
+            self.HDU.append(fits.open(fname))
             k = k + 1
-        return
 
     def write(self):
         """ Write MEF file with no Primary HDU
         """
-        newhdu = pyfits.HDUList()
+        newhdu = fits.HDUList()
 
         for hdu in self.HDU:
             newhdu.append(hdu[0])# ,hdu[0].header)
         if self.verb:
-            print "# Writing to: %s" % self.outname
-        newhdu.writeto(self.outname, clobber=self.clobber)
-        return
+            print(f"# Writing to: {self.outname}")
+        newhdu.writeto(self.outname, overwrite=self.clobber)
 
 
 #######################################################################
@@ -124,13 +121,13 @@ def combine_cats(incats, outcat):
     if miscutils.fwdebug_check(3, 'FITSUTILS_DEBUG'):
         miscutils.fwdebug_print("Constructing hdulist object for single fits file")
     # Construct hdulist object to append hdus from individual catalogs to
-    hdulist = pyfits.HDUList()
+    hdulist = fits.HDUList()
 
     # Now append the hdus from each input catalog file to the hdulist
     for incat in incat_lst:
         if miscutils.fwdebug_check(3, 'FITSUTILS_DEBUG'):
-            miscutils.fwdebug_print("Appending 3 HDUs from cat --> %s" % incat)
-        hdulist1 = pyfits.open(incat, mode='readonly')
+            miscutils.fwdebug_print(f"Appending 3 HDUs from cat --> {incat}")
+        hdulist1 = fits.open(incat, mode='readonly')
         hdulist.append(hdulist1[0])
         hdulist.append(hdulist1[1])
         hdulist.append(hdulist1[2])
@@ -139,14 +136,14 @@ def combine_cats(incats, outcat):
     # And write the full hdulist to the output file
     if os.path.exists(outcat):
         os.remove(outcat)
-        miscutils.fwdebug_print("Removing pre-existing version of fullcat %s" % outcat)
+        miscutils.fwdebug_print(f"Removing pre-existing version of fullcat {outcat}")
 
     if miscutils.fwdebug_check(3, 'FITSUTILS_DEBUG'):
-        miscutils.fwdebug_print("Writing results to fullcat --> %s" % outcat)
+        miscutils.fwdebug_print(f"Writing results to fullcat --> {outcat}")
     hdulist.writeto(outcat)
 
     if miscutils.fwdebug_check(6, 'FITSUTILS_DEBUG'):
-        miscutils.fwdebug_print("Using fits_close to close fullcat --> %s" % outcat)
+        miscutils.fwdebug_print(f"Using fits_close to close fullcat --> {outcat}")
     hdulist.close()
 
 
@@ -178,15 +175,15 @@ def splitScampHead(head_out, heads):
     filehead = None
     for line in open(head_out, 'r'):
         if re.match("^HISTORY   Astrometric solution by SCAMP.*", line):
-            if filehead != None:
+            if filehead is not None:
                 filehead.close()
                 if miscutils.fwdebug_check(3, 'FITSUTILS_DEBUG'):
-                    miscutils.fwdebug_print("Closing .head file after writing %d lines." % linecount)
+                    miscutils.fwdebug_print(f"Closing .head file after writing {linecount:d} lines.")
                 if endcount != headcount:
-                    miscutils.fwdebug_print("Error: problem when writing %s" % head_lst[headcount])
-                    raise ValueError("Number of END lines (%d) does not match number of HISTORY lines (%d)" % (endcount, headcount))
+                    miscutils.fwdebug_print(f"Error: problem when writing {head_lst[headcount]}")
+                    raise ValueError(f"Number of END lines ({endcount:d}) does not match number of HISTORY lines ({headcount:d})")
             if miscutils.fwdebug_check(3, 'FITSUTILS_DEBUG'):
-                miscutils.fwdebug_print("Opening .head file %d --> %s" % (headcount, head_lst[headcount]))
+                miscutils.fwdebug_print(f"Opening .head file {headcount:d} --> {head_lst[headcount]}")
             filehead = open(head_lst[headcount], 'w')
             headcount += 1
             linecount = 0
@@ -198,15 +195,14 @@ def splitScampHead(head_out, heads):
     filehead.close()
 
     if endcount != headcount:
-        miscutils.fwdebug_print("Error: problem when writing %s" % head_lst[headcount])
-        raise ValueError("Number of END lines (%d) does not match number of HISTORY lines (%d)" % \
-                         (endcount, headcount))
+        miscutils.fwdebug_print(f"Error: problem when writing {head_lst[headcount]}")
+        raise ValueError(f"Number of END lines ({endcount:d}) does not match number of HISTORY lines ({headcount:d})")
 
     if miscutils.fwdebug_check(3, 'FITSUTILS_DEBUG'):
-        miscutils.fwdebug_print("Closing .head file after writing %d lines.\n" % linecount)
+        miscutils.fwdebug_print(f"Closing .head file after writing {linecount:d} lines.\n")
 
     if headcount != reqheadcount:
-        raise ValueError("Number of head files made (%d) does not match required number of head files (%d)" % (headcount, reqheadcount))
+        raise ValueError(f"Number of head files made ({headcount:d}) does not match required number of head files ({reqheadcount:d})")
 
 
 
@@ -333,7 +329,7 @@ def get_ldac_imhead_as_cardlist(imhead):
     data = imhead.data
     cards = []
     for cd in data[0][0]:
-        cards.append(pyfits.Card.fromstring(cd))
+        cards.append(fits.Card.fromstring(cd))
     return cards
 
 
@@ -351,5 +347,5 @@ def get_ldac_imhead_as_hdr(imhead):
         astropy.io.fits.header
             Contains the data from the input.
     """
-    hdr = pyfits.Header(get_ldac_imhead_as_cardlist(imhead))
+    hdr = fits.Header(get_ldac_imhead_as_cardlist(imhead))
     return hdr
