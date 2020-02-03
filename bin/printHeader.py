@@ -28,6 +28,7 @@ def main():
     parser.add_argument('fitsfile', action='store')
     args = parser.parse_args()
 
+    useStdout = False
     if args.outfile:
         try:
             outfh = open(args.outfile, "w")
@@ -35,6 +36,7 @@ def main():
             sys.exit(f"ERROR: Cannot open {args.outfile}")
     else:
         outfh = sys.stdout
+        useStdout = True
 
     # Convert extension to integers in not strings
     try:
@@ -44,7 +46,9 @@ def main():
 
     # Make the call
     print_header(args.fitsfile, ext=args.extension, ofileh=outfh)
-    outfh.close()
+    # only clode if outputtting to real file
+    if not useStdout:
+        outfh.close()
 
 if __name__ == "__main__":
     main()
