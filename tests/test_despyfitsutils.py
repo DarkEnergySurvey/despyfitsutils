@@ -169,10 +169,12 @@ class TestFitsSpecialMetadata(unittest.TestCase):
     def test_func_objects(self):
         self.assertRaises(KeyError, fsm.func_objects, self.testfile)
         self.assertEqual(fsm.func_objects(self.testfile, fits.open(self.testfile), 1), 4146)
+        self.assertEqual(fsm.func_objects(self.testfile, None, 1), 4146)
 
     def test_func_field(self):
         self.assertEqual(fsm.func_field(self.testfile), '-159-521')
         self.assertEqual(fsm.func_field(self.testfile, fits.open(self.testfile), 'PRIMARY'), '-159-521')
+        self.assertRaises(KeyError, fsm.func_field, self.testfile, fits.open(self.testfile), 'PRIM')
 
     def test_func_radec(self):
         self.assertAlmostEqual(fsm.func_radeg(self.testfile), 345.6291, 4)
