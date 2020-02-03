@@ -6,6 +6,9 @@ import argparse
 import despyfitsutils
 
 def main():
+    """
+    Main entry point
+    """
     parser = argparse.ArgumentParser(description="Create a MEF fits file from a list of flat fits files")
 
     parser.add_argument("filenames", nargs='*',
