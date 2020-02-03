@@ -12,7 +12,7 @@ from astropy.io import fits
 
 import despymisc.miscutils as miscutils
 
-class makeMEF:
+class makeMEF:  # pragma: no cover
     """
     A Class to create a MEF fits files.
 
