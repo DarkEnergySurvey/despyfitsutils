@@ -53,8 +53,6 @@ class makeMEF:
             self.addEXTNAME()
         self.write()
 
-        return
-
     def addEXTNAME(self):
         """Add a user-provided list of extension names to the MEF
         """
@@ -77,7 +75,6 @@ class makeMEF:
                 hdu[0].header.set('DES_EXT', makeMEF.DES_EXT[extname], 'DESDM Extension Name', after='EXTNAME')
 
             k = k + 1
-        return
 
     def read(self):
         """ Read in the HDUs using pyfits
